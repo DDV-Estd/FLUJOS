@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flujo de Procesos para Entregables de Pago - Provías Nacional</title>
+    <title>Portal de Flujos - Dirección de Derecho de Vía | Provías Nacional</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -23,6 +23,7 @@
                             500: '#1d63b8',
                             800: '#094780',
                             900: '#06335d',
+                            red: '#9A1A1A'
                         },
                         accent: {
                             amber: '#f59e0b',
@@ -51,7 +52,6 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px -4px rgba(9, 71, 128, 0.2);
         }
-        /* Rombo estilizado para la condición */
         .gateway-diamond {
             width: 28px;
             height: 28px;
@@ -65,9 +65,7 @@
             justify-content: center;
             border-radius: 4px;
         }
-        .gateway-diamond i {
-            transform: rotate(-45deg);
-        }
+        .gateway-diamond i { transform: rotate(-45deg); }
         svg.connections-layer {
             position: absolute;
             top: 0;
@@ -77,581 +75,846 @@
             pointer-events: none;
             z-index: 50;
         }
+        .title-shadow {
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+        }
+        /* Estilo de degradado parcial en el encabezado estilo tarjeta de referencia */
+        .header-gradient-bg {
+            background-color: #094780;
+            background-image: linear-gradient(90deg, #094780 60%, #094780 75%, #9A1A1A 98%);
+        }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 h-full flex flex-col antialiased">
+<body class="bg-white text-slate-800 h-full flex flex-col antialiased">
 
-    <!-- Top Header Bar -->
-    <header class="bg-provias-800 text-white shadow-md border-b border-provias-900 z-30 flex-shrink-0">
+    <!-- Top Master Header Bar con Degradado Parcial -->
+    <header class="header-gradient-bg text-white shadow-md border-b-4 border-provias-red z-30 flex-shrink-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('menu')">
                 <div class="bg-white/10 p-2.5 rounded-xl border border-white/20 text-accent-amber">
                     <i class="fa-solid fa-diagram-project text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">Flujo de Procesos para Entregables de Pago</h1>
+                    <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white flex items-center gap-2">
+                        <span>DIRECCION DE DERECHO</span>
+                        <span class="text-red-300 title-shadow">DE VÍA</span>
+                    </h1>
+                    <p class="text-[11px] text-sky-200">Provías Nacional - MTC | Sistema Integrado de Gestión</p>
                 </div>
             </div>
             
             <div class="flex items-center space-x-3">
+                <button onclick="switchView('menu')" id="btn-back-menu" class="hidden bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2 px-4 rounded-lg transition border border-white/20 items-center gap-2">
+                    <i class="fa-solid fa-house"></i> Menú Principal
+                </button>
                 <div class="text-right hidden md:block">
-                    <p class="text-xs font-semibold text-sky-200">Dirección de Derecho de Vía (DDV)</p>
-                    <p class="text-[11px] text-slate-300">Provías Nacional - MTC</p>
+                    <p class="text-xs font-semibold text-sky-200">Módulo de Procesos</p>
+                    <p class="text-[11px] text-slate-300">Versión 2.0 unificada</p>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Workspace -->
-    <main class="flex-1 max-w-[98%] w-full mx-auto py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-hidden">
-        
-        <!-- Left: Swimlanes Canvas (9 cols) -->
-        <section class="lg:col-span-9 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 p-5 overflow-x-auto overflow-y-auto relative">
-            
-            <div class="flex justify-between items-center mb-5 pb-3 border-b border-slate-100 flex-shrink-0">
-                <div>
-                    <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-table-cells text-provias-800"></i> Matriz de Actores
+    <!-- MAIN VIEW CONTAINER -->
+    <div class="flex-1 flex flex-col overflow-hidden relative">
+
+        <!-- ========================================== -->
+        <!-- VISTA 1: MENÚ PRINCIPAL (SELECCIÓN DE FLUJOS) -->
+        <!-- ========================================== -->
+        <section id="view-menu" class="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 bg-slate-50 overflow-y-auto">
+            <div class="max-w-5xl w-full text-center space-y-8">
+                
+                <div class="space-y-3">
+                    <span class="inline-flex items-center text-xs mono font-bold bg-sky-100 text-provias-800 px-3 py-1 rounded-full border border-sky-200 shadow-xs">
+                        <span class="w-2 h-2 rounded-full bg-provias-red mr-2 animate-pulse"></span> Panel de Navegación Institucional
+                    </span>
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+                        DIRECCION DE DERECHO <span class="text-provias-red title-shadow">DE VÍA</span>
                     </h2>
-                    <p class="text-xs text-slate-500">Haga clic en cualquier actividad para inspeccionar sus detalles en el panel derecho.</p>
+                    <p class="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto">
+                        Seleccione el flujo de procesos interactivo que desea consultar y administrar:
+                    </p>
                 </div>
-            </div>
 
-            <!-- Wrapper relacional -->
-            <div id="canvas-wrapper" class="relative min-w-[1350px] pb-4 pt-2">
-
-                <!-- Swimlanes Container with 6 Columns Layout -->
-                <div class="flex flex-col space-y-4 relative z-10">
+                <!-- 3 Opciones Horizontales -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
                     
-                    <!-- LANE 1: Contratista -->
-                    <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
-                        <div class="w-36 bg-provias-800 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
-                            <i class="fa-solid fa-hard-hat mb-2 text-2xl text-accent-amber"></i>
-                            <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">1. Contratista</span>
+                    <!-- Opción 1: Flujo de Pagos -->
+                    <div onclick="switchView('pagos')" class="group bg-white hover:bg-sky-50/60 p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-provias-800 cursor-pointer transition-all duration-300 flex flex-col justify-between text-left hover:-translate-y-1">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-provias-800 text-accent-amber flex items-center justify-center text-xl mb-4 shadow-sm group-hover:scale-110 transition">
+                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 group-hover:text-provias-800 transition">Flujo de Pagos</h3>
+                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                Gestión integral de entregables de pago, revisión técnica, notificaciones y memorándum de cierre.
+                            </p>
                         </div>
-                        <div class="flex-1 p-3 grid grid-cols-6 gap-4 items-center">
-                            <div onclick="selectNode('presenta_entregable')" id="node-presenta_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-provias-800 shadow-sm text-center">
-                                <span class="text-[8px] mono bg-provias-100 text-provias-800 px-1.5 py-0.5 rounded font-bold">INICIO</span>
-                                <h4 class="text-[11px] font-bold text-slate-900 mt-1">Presenta Entregable</h4>
-                            </div>
-                            <div></div>
-                            <div onclick="selectNode('subsanacion_entregable')" id="node-subsanacion_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-rose-300 shadow-sm text-center">
-                                <span class="text-[8px] mono bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold">SUBSANACIÓN</span>
-                                <h4 class="text-[11px] font-bold text-slate-900 mt-1">Subsanacion de Entregable</h4>
-                            </div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-provias-800">
+                            <span>11 Actividades</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
                         </div>
                     </div>
 
-                    <!-- LANE 2: Dirección DDV -->
-                    <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
-                        <div class="w-36 bg-provias-900 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
-                            <i class="fa-solid fa-landmark mb-2 text-2xl text-accent-amber"></i>
-                            <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">2. Dirección<br>DDV</span>
+                    <!-- Opción 2: Flujo de Presupuesto -->
+                    <div onclick="switchView('presupuesto')" class="group bg-white hover:bg-sky-50/60 p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-provias-800 cursor-pointer transition-all duration-300 flex flex-col justify-between text-left hover:-translate-y-1">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-provias-900 text-accent-amber flex items-center justify-center text-xl mb-4 shadow-sm group-hover:scale-110 transition">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 group-hover:text-provias-800 transition">Flujo de Presupuesto</h3>
+                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                Solicitudes de certificación, rebaja o ampliación presupuestal, reporte Sigaweb y memorándum a OPP.
+                            </p>
                         </div>
-                        <div class="flex-1 p-3 grid grid-cols-6 gap-4 items-center">
-                            <div onclick="selectNode('asigna_expediente')" id="node-asigna_expediente" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center">
-                                <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">FASE 1</span>
-                                <h4 class="text-[11px] font-bold text-slate-900 mt-1">Asigna Expediente</h4>
-                            </div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div onclick="selectNode('genera_oficio_notifica')" id="node-genera_oficio_notifica" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-amber-300 shadow-sm text-center">
-                                <span class="text-[8px] mono bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">NOTIFICACIÓN</span>
-                                <h4 class="text-[11px] font-bold text-slate-900 mt-1">Genera Oficio y Notifica</h4>
-                            </div>
-                            <div onclick="selectNode('memo_pago')" id="node-memo_pago" class="flow-node cursor-pointer bg-emerald-700 text-white p-3 rounded-xl border border-emerald-900 shadow-sm text-center">
-                                <span class="text-[8px] mono bg-white/20 text-white px-1.5 py-0.5 rounded font-bold">CIERRE</span>
-                                <h4 class="text-[11px] font-bold text-white mt-1">Genera Memorandum de Pago</h4>
-                            </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-provias-800">
+                            <span>4 Actividades</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
                         </div>
                     </div>
 
-                    <!-- LANE 3: Administrador de Proyectos -->
-                    <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
-                        <div class="w-36 bg-provias-800 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
-                            <i class="fa-solid fa-user-gear mb-2 text-2xl text-accent-amber"></i>
-                            <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">3. Administrador<br>de Proyectos</span>
+                    <!-- Opción 3: Flujo de Servicios -->
+                    <div onclick="switchView('servicios')" class="group bg-white hover:bg-sky-50/60 p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-provias-800 cursor-pointer transition-all duration-300 flex flex-col justify-between text-left hover:-translate-y-1">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-provias-red text-white flex items-center justify-center text-xl mb-4 shadow-sm group-hover:scale-110 transition">
+                                <i class="fa-solid fa-file-contract"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 group-hover:text-provias-800 transition">Flujo de Servicios</h3>
+                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                Solicitud de rebaja de órdenes de servicio (OS), emisión de reporte Sigaweb y memorándum de rebaja.
+                            </p>
                         </div>
-                        <div class="flex-1 p-3 grid grid-cols-6 gap-4 items-center">
-                            <div></div>
-                            <div onclick="selectNode('revisa_entregable')" id="node-revisa_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center">
-                                <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">REVISIÓN</span>
-                                <h4 class="text-[11px] font-bold text-slate-900 mt-1">Revisa Entregable</h4>
-                            </div>
-                            <!-- Columna 3: Nodo condicional -->
-                            <div onclick="selectNode('es_conforme')" id="node-es_conforme" class="flow-node cursor-pointer p-2 text-center bg-transparent border-0 shadow-none -mt-7">
-                                <h4 class="text-[11px] font-bold text-slate-900 mb-2">¿Es conforme el Producto?</h4>
-                                <div class="gateway-diamond">
-                                    <i class="fa-solid fa-question text-white text-[10px] font-bold"></i>
-                                </div>
-                            </div>
-                            <div onclick="selectNode('elaboracion_oficio_obs')" id="node-elaboracion_oficio_obs" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-rose-300 shadow-sm text-center">
-                                <span class="text-[8px] mono bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold">OBSERVACIÓN</span>
-                                <h4 class="text-[11px] font-bold text-slate-900 mt-1">Elaboracion de Oficio de observacion</h4>
-                            </div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-
-                    <!-- LANE 4: Area de Procesos (2 filas internas) -->
-                    <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
-                        <div class="w-36 bg-provias-900 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
-                            <i class="fa-solid fa-gears mb-2 text-2xl text-accent-amber"></i>
-                            <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">4. Área de<br>Procesos</span>
-                        </div>
-                        <div class="flex-1 p-3 flex flex-col space-y-2 justify-center">
-                            <!-- Fila Superior -->
-                            <div class="grid grid-cols-6 gap-4 items-center">
-                                <div></div>
-                                <div onclick="selectNode('monitorea_entregable')" id="node-monitorea_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center">
-                                    <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">MONITOREO</span>
-                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Monitorea Entregable</h4>
-                                </div>
-                                <div></div>
-                                <div onclick="selectNode('revisa_oficio')" id="node-revisa_oficio" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center">
-                                    <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">CONTROL</span>
-                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Revisa Oficio</h4>
-                                </div>
-                                <div></div>
-                                <div></div>
-                            </div>
-                            <!-- Fila Inferior -->
-                            <div class="grid grid-cols-6 gap-4 items-center">
-                                <div></div>
-                                <div></div>
-                                <div onclick="selectNode('registra_entregable')" id="node-registra_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-emerald-300 shadow-sm text-center">
-                                    <span class="text-[8px] mono bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">REGISTRO</span>
-                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Registra Entregable</h4>
-                                </div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-provias-800">
+                            <span>5 Actividades</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- SVG de Conexiones (Capa Superior z-index 50) -->
-                <svg id="svg-connections" class="connections-layer">
-                    <defs>
-                        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto-start-reverse">
-                            <path d="M 0 1 L 10 5 L 0 9 z" fill="#094780"></path>
-                        </marker>
-                    </defs>
-                </svg>
-
             </div>
         </section>
 
-        <!-- Right: Detail Inspector Panel (3 cols) -->
-        <section class="lg:col-span-3 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 p-5 overflow-y-auto">
-            
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4 flex-shrink-0">
-                <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-circle-info text-provias-800"></i> Inspector
-                </h3>
-                <span id="inspectorBadge" class="text-xs mono bg-provias-100 text-provias-800 font-bold px-2 py-1 rounded">Actor</span>
+
+        <!-- ========================================== -->
+        <!-- VISTA 2: FLUJO DE PAGOS -->
+        <!-- ========================================== -->
+        <div id="view-pagos" class="hidden flex-1 max-w-[98%] w-full mx-auto py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-hidden">
+            <section class="lg:col-span-9 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 p-5 overflow-x-auto overflow-y-auto relative">
+                <div class="flex justify-between items-center mb-5 pb-3 border-b border-slate-100 flex-shrink-0">
+                    <div>
+                        <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-table-cells text-provias-800"></i> Matriz de Actores - Flujo de Pagos
+                        </h2>
+                        <p class="text-xs text-slate-500">Haga clic en cualquier actividad para inspeccionar sus detalles en el panel derecho.</p>
+                    </div>
+                </div>
+                <div id="canvas-wrapper-pagos" class="relative min-w-[1350px] pb-4 pt-2">
+                    <div class="flex flex-col space-y-4 relative z-10">
+                        <!-- LANE 1: Contratista -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-36 bg-provias-800 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-hard-hat mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">1. Contratista</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-6 gap-4 items-center">
+                                <div onclick="pagosSelectNode('presenta_entregable')" id="node-pagos-presenta_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-provias-800 shadow-sm text-center">
+                                    <span class="text-[8px] mono bg-provias-100 text-provias-800 px-1.5 py-0.5 rounded font-bold">INICIO</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Presenta Entregable</h4>
+                                </div>
+                                <div></div>
+                                <div onclick="pagosSelectNode('subsanacion_entregable')" id="node-pagos-subsanacion_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-rose-300 shadow-sm text-center">
+                                    <span class="text-[8px] mono bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold">SUBSANACIÓN</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Subsanacion de Entregable</h4>
+                                </div>
+                                <div></div><div></div><div></div>
+                            </div>
+                        </div>
+                        <!-- LANE 2: Dirección DDV -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-36 bg-provias-900 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-landmark mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">2. Dirección<br>DDV</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-6 gap-4 items-center">
+                                <div onclick="pagosSelectNode('asigna_expediente')" id="node-pagos-asigna_expediente" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center">
+                                    <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">FASE 1</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Asigna Expediente</h4>
+                                </div>
+                                <div></div><div></div><div></div>
+                                <div onclick="pagosSelectNode('genera_oficio_notifica')" id="node-pagos-genera_oficio_notifica" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-amber-300 shadow-sm text-center">
+                                    <span class="text-[8px] mono bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">NOTIFICACIÓN</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Genera Oficio y Notifica</h4>
+                                </div>
+                                <div onclick="pagosSelectNode('memo_pago')" id="node-pagos-memo_pago" class="flow-node cursor-pointer bg-emerald-700 text-white p-3 rounded-xl border border-emerald-900 shadow-sm text-center">
+                                    <span class="text-[8px] mono bg-white/20 text-white px-1.5 py-0.5 rounded font-bold">CIERRE</span>
+                                    <h4 class="text-[11px] font-bold text-white mt-1">Genera Memorandum de Pago</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- LANE 3: Administrador de Proyectos -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-36 bg-provias-800 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-user-gear mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">3. Administrador<br>de Proyectos</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-6 gap-4 items-center">
+                                <div></div>
+                                <div onclick="pagosSelectNode('revisa_entregable')" id="node-pagos-revisa_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center">
+                                    <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">REVISIÓN</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Revisa Entregable</h4>
+                                </div>
+                                <div onclick="pagosSelectNode('es_conforme')" id="node-pagos-es_conforme" class="flow-node cursor-pointer p-2 text-center bg-transparent border-0 shadow-none -mt-7">
+                                    <h4 class="text-[11px] font-bold text-slate-900 mb-2">¿Es conforme el Producto?</h4>
+                                    <div class="gateway-diamond"><i class="fa-solid fa-question text-white text-[10px] font-bold"></i></div>
+                                </div>
+                                <div onclick="pagosSelectNode('elaboracion_oficio_obs')" id="node-pagos-elaboracion_oficio_obs" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-rose-300 shadow-sm text-center">
+                                    <span class="text-[8px] mono bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold">OBSERVACIÓN</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Elaboracion de Oficio de observacion</h4>
+                                </div>
+                                <div></div><div></div>
+                            </div>
+                        </div>
+                        <!-- LANE 4: Área de Procesos -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-36 bg-provias-900 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-gears mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">4. Área de<br>Procesos</span>
+                            </div>
+                            <div class="flex-1 p-3 flex flex-col space-y-2 justify-center">
+                                <div class="grid grid-cols-6 gap-4 items-center">
+                                    <div></div>
+                                    <div onclick="pagosSelectNode('monitorea_entregable')" id="node-pagos-monitorea_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center">
+                                        <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">MONITOREO</span>
+                                        <h4 class="text-[11px] font-bold text-slate-900 mt-1">Monitorea Entregable</h4>
+                                    </div>
+                                    <div></div>
+                                    <div onclick="pagosSelectNode('revisa_oficio')" id="node-pagos-revisa_oficio" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center">
+                                        <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">CONTROL</span>
+                                        <h4 class="text-[11px] font-bold text-slate-900 mt-1">Revisa Oficio</h4>
+                                    </div>
+                                    <div></div><div></div>
+                                </div>
+                                <div class="grid grid-cols-6 gap-4 items-center">
+                                    <div></div><div></div>
+                                    <div onclick="pagosSelectNode('registra_entregable')" id="node-pagos-registra_entregable" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-emerald-300 shadow-sm text-center">
+                                        <span class="text-[8px] mono bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">REGISTRO</span>
+                                        <h4 class="text-[11px] font-bold text-slate-900 mt-1">Registra Entregable</h4>
+                                    </div>
+                                    <div></div><div></div><div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <svg id="svg-connections-pagos" class="connections-layer">
+                        <defs>
+                            <marker id="arrow-pagos" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#094780"></path>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </section>
+            <!-- Inspector Panel Pagos -->
+            <section class="lg:col-span-3 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 p-5 overflow-y-auto">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4 flex-shrink-0">
+                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-provias-800"></i> Inspector
+                    </h3>
+                    <span id="inspectorBadge-pagos" class="text-xs mono bg-provias-100 text-provias-800 font-bold px-2 py-1 rounded">Actor</span>
+                </div>
+                <div id="inspectorContent-pagos" class="space-y-4 flex-1"></div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex gap-2 flex-shrink-0">
+                    <button onclick="pagosNavigateStep(-1)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-arrow-left"></i> Anterior
+                    </button>
+                    <button onclick="pagosNavigateStep(1)" class="flex-1 bg-provias-800 hover:bg-provias-900 text-white text-xs font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                        Siguiente <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- VISTA 3: FLUJO DE PRESUPUESTO -->
+        <!-- ========================================== -->
+        <div id="view-presupuesto" class="hidden flex-1 max-w-[98%] w-full mx-auto py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-hidden">
+            <section class="lg:col-span-9 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 p-5 overflow-x-auto overflow-y-auto relative">
+                <div class="flex justify-between items-center mb-5 pb-3 border-b border-slate-100 flex-shrink-0">
+                    <div>
+                        <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-table-cells text-provias-800"></i> Matriz de Actores - Flujo de Presupuesto
+                        </h2>
+                        <p class="text-xs text-slate-500">Haga clic en cualquier actividad para inspeccionar sus detalles en el panel derecho.</p>
+                    </div>
+                </div>
+                <div id="canvas-wrapper-presupuesto" class="relative min-w-[950px] pb-4 pt-2">
+                    <div class="flex flex-col space-y-4 relative z-10">
+                        <!-- ACTOR 1 -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-40 bg-provias-800 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-user-gear mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">1. Administrador<br>de Proyectos</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-2 gap-6 items-center justify-items-center">
+                                <div onclick="presupSelectNode('creacion_solicitud')" id="node-presup-creacion_solicitud" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-provias-800 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-provias-100 text-provias-800 px-1.5 py-0.5 rounded font-bold">INICIO</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Creación de solicitud por SGD</h4>
+                                </div>
+                                <div onclick="presupSelectNode('proyecta_memo')" id="node-presup-proyecta_memo" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">PROYECTO</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Proyecta Memo de Certificacion</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ACTOR 2 -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-40 bg-provias-900 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-calculator mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">2. Área de<br>Presupuesto</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-2 gap-6 items-center justify-items-center">
+                                <div onclick="presupSelectNode('generacion_reporte')" id="node-presup-generacion_reporte" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-emerald-300 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">REPORTE</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Generacion de Reporte</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <!-- ACTOR 3 -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-40 bg-provias-800 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-landmark mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">3. Dirección<br>DDV</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-2 gap-6 items-center justify-items-center">
+                                <div></div>
+                                <div onclick="presupSelectNode('genera_memo_certificacion')" id="node-presup-genera_memo_certificacion" class="flow-node cursor-pointer bg-emerald-700 text-white p-3 rounded-xl border border-emerald-900 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-white/20 text-white px-1.5 py-0.5 rounded font-bold">APROBACIÓN</span>
+                                    <h4 class="text-[11px] font-bold text-white mt-1">Genera Memorandum de Certificacion</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <svg id="svg-connections-presupuesto" class="connections-layer">
+                        <defs>
+                            <marker id="arrow-presupuesto" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#094780"></path>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </section>
+            <!-- Inspector Panel Presupuesto -->
+            <section class="lg:col-span-3 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 p-5 overflow-y-auto">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4 flex-shrink-0">
+                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-provias-800"></i> Inspector
+                    </h3>
+                    <span id="inspectorBadge-presupuesto" class="text-xs mono bg-provias-100 text-provias-800 font-bold px-2 py-1 rounded">Actor</span>
+                </div>
+                <div id="inspectorContent-presupuesto" class="space-y-4 flex-1"></div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex gap-2 flex-shrink-0">
+                    <button onclick="presupNavigateStep(-1)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-arrow-left"></i> Anterior
+                    </button>
+                    <button onclick="presupNavigateStep(1)" class="flex-1 bg-provias-800 hover:bg-provias-900 text-white text-xs font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                        Siguiente <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- VISTA 4: FLUJO DE SERVICIOS -->
+        <!-- ========================================== -->
+        <div id="view-servicios" class="hidden flex-1 max-w-[98%] w-full mx-auto py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-hidden">
+            <section class="lg:col-span-9 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 p-5 overflow-x-auto overflow-y-auto relative">
+                <div class="flex justify-between items-center mb-5 pb-3 border-b border-slate-100 flex-shrink-0">
+                    <div>
+                        <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-table-cells text-provias-800"></i> Matriz de Actores - Flujo de Servicios
+                        </h2>
+                        <p class="text-xs text-slate-500">Haga clic en cualquier actividad para inspeccionar sus detalles en el panel derecho.</p>
+                    </div>
+                </div>
+                <div id="canvas-wrapper-servicios" class="relative min-w-[950px] pb-4 pt-2">
+                    <div class="flex flex-col space-y-4 relative z-10">
+                        <!-- ACTOR 1 -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-40 bg-provias-800 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-user-gear mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">1. Administrador<br>de Proyectos</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-2 gap-6 items-center justify-items-center">
+                                <div onclick="servSelectNode('creacion_solicitud')" id="node-serv-creacion_solicitud" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-provias-800 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-provias-100 text-provias-800 px-1.5 py-0.5 rounded font-bold">INICIO</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Creación de solicitud por SGD</h4>
+                                </div>
+                                <div onclick="servSelectNode('proyecta_memo')" id="node-serv-proyecta_memo" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">PROYECTO</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Proyecta Memo de Rebaja de OS</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ACTOR 2 -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-40 bg-provias-900 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-calculator mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">2. Área de<br>Presupuesto</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-2 gap-6 items-center justify-items-center">
+                                <div onclick="servSelectNode('generacion_reporte')" id="node-serv-generacion_reporte" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-emerald-300 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">REPORTE</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Generacion de Reporte</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <!-- ACTOR 3 -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-40 bg-provias-900 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-gears mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">3. Área de<br>Procesos</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-2 gap-6 items-center justify-items-center">
+                                <div onclick="servSelectNode('registro_rebaja')" id="node-serv-registro_rebaja" class="flow-node cursor-pointer p-3 rounded-xl border-2 border-slate-200 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">REGISTRO</span>
+                                    <h4 class="text-[11px] font-bold text-slate-900 mt-1">Registro y conocimiento de Rebaja</h4>
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <!-- ACTOR 4 -->
+                        <div class="flex items-stretch border border-slate-200 rounded-xl bg-slate-50 overflow-hidden shadow-xs">
+                            <div class="w-40 bg-provias-800 text-white p-3 flex flex-col justify-center items-center text-center flex-shrink-0">
+                                <i class="fa-solid fa-landmark mb-2 text-2xl text-accent-amber"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wide leading-tight">4. Dirección<br>DDV</span>
+                            </div>
+                            <div class="flex-1 p-3 grid grid-cols-2 gap-6 items-center justify-items-center">
+                                <div></div>
+                                <div onclick="servSelectNode('genera_memo_rebaja')" id="node-serv-genera_memo_rebaja" class="flow-node cursor-pointer bg-emerald-700 text-white p-3 rounded-xl border border-emerald-900 shadow-sm text-center w-full max-w-[340px]">
+                                    <span class="text-[8px] mono bg-white/20 text-white px-1.5 py-0.5 rounded font-bold">APROBACIÓN</span>
+                                    <h4 class="text-[11px] font-bold text-white mt-1">Genera Memorandum de Rebaja de OS</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <svg id="svg-connections-servicios" class="connections-layer">
+                        <defs>
+                            <marker id="arrow-servicios" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#094780"></path>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </section>
+            <!-- Inspector Panel Servicios -->
+            <section class="lg:col-span-3 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 p-5 overflow-y-auto">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4 flex-shrink-0">
+                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-provias-800"></i> Inspector
+                    </h3>
+                    <span id="inspectorBadge-servicios" class="text-xs mono bg-provias-100 text-provias-800 font-bold px-2 py-1 rounded">Actor</span>
+                </div>
+                <div id="inspectorContent-servicios" class="space-y-4 flex-1"></div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex gap-2 flex-shrink-0">
+                    <button onclick="servNavigateStep(-1)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-arrow-left"></i> Anterior
+                    </button>
+                    <button onclick="servNavigateStep(1)" class="flex-1 bg-provias-800 hover:bg-provias-900 text-white text-xs font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                        Siguiente <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <!-- Master Footer Bar -->
+    <footer class="bg-white border-t border-slate-200 text-slate-600 py-3 px-6 flex-shrink-0">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">
+            <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-provias-800"></span>
+                <span class="w-2 h-2 rounded-full bg-provias-red"></span>
+                <span class="font-semibold text-slate-700">Sistema de Flujos - Dirección de Derecho de Vía</span>
             </div>
-
-            <div id="inspectorContent" class="space-y-4 flex-1">
-                <!-- Se llena dinámicamente mediante JS -->
+            <div>
+                <span class="font-semibold text-provias-800">Máquina Estadística</span>
             </div>
+        </div>
+    </footer>
 
-            <div class="mt-6 pt-4 border-t border-slate-100 flex gap-2 flex-shrink-0">
-                <button onclick="navigateStep(-1)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-arrow-left"></i> Anterior
-                </button>
-                <button onclick="navigateStep(1)" class="flex-1 bg-provias-800 hover:bg-provias-900 text-white text-xs font-bold py-2.5 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
-                    Siguiente <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- Script Application Logic -->
+    <!-- Script Application Logic & Master Router -->
     <script>
-        const stepsData = {
-            'presenta_entregable': {
-                title: "Presenta Entregable",
-                actor: "1. Contratista",
-                description: "El contratista presenta el entregable físico y digital a través del Sistema de Gestión Documental (SGD).",
-                actions: ["Presentación inicial del expediente.", "Registro en Mesa de Partes."],
-                outputs: "Cargo de recepción SGD."
-            },
-            'asigna_expediente': {
-                title: "Asigna Expediente",
-                actor: "2. Dirección DDV",
-                description: "La Dirección de Derecho de Vía recibe el expediente y realiza la asignación formal al responsable.",
-                actions: ["Revisión preliminar de derivación.", "Asignación de especialista."],
-                outputs: "Expediente asignado."
-            },
-            'revisa_entregable': {
-                title: "Revisa Entregable",
-                actor: "3. Administrador de Proyectos",
-                description: "El Administrador de Proyectos revisa el cumplimiento del producto del servicio.",
-                actions: ["Cruce con TDR y términos contractuales.", "Verificación de actividades del entregable."],
-                outputs: "Informe de revisión."
-            },
-            'monitorea_entregable': {
-                title: "Monitorea Entregable",
-                actor: "4. Área de Procesos",
-                description: "El Área de Procesos realiza el seguimiento y control del avance del expediente dentro del flujo institucional.",
-                actions: ["Control de tiempos y plazos."],
-                outputs: "Reporte de estado."
-            },
-            'es_conforme': {
-                title: "¿Es conforme el Producto?",
-                actor: "3. Administrador de Proyectos",
-                description: "Compuerta de decisión para verificar si el entregable cuenta con la conformidad técnica requerida.",
-                actions: ["Evaluación de criterios de conformidad.", "Derivación condicional (Sí / No)."],
-                outputs: "Resultado de conformidad."
-            },
-            'registra_entregable': {
-                title: "Registra Entregable",
-                actor: "4. Área de Procesos",
-                description: "Verificacion y Registro del ingreso y conformidad del entregable en los sistemas de control de la DDV..",
-                actions: ["Verificacion del cumplimiento de las actividades del TDR.", "Registro del entregable."],
-                outputs: "Registro actualizado."
-            },
-            'memo_pago': {
-                title: "Genera Memorandum de Pago",
-                actor: "2. Dirección DDV",
-                description: "Estando conforme el entregable, la Dirección genera el memorándum de remisión para el trámite de pago.",
-                actions: ["Aprobación final de la Dirección.", "Derivación al área de logística o contabilidad de corresponder."],
-                outputs: "Memorándum de pago."
-            },
-            'elaboracion_oficio_obs': {
-                title: "Elaboracion de Oficio de observacion",
-                actor: "3. Administrador de Proyectos",
-                description: "Si se detectan deficiencias, el administrador elabora el proyecto de oficio de observaciones.",
-                actions: ["Sistematización de observaciones técnicas.", "Remisión a la Dirección."],
-                outputs: "Proyecto de oficio de observaciones."
-            },
-            'revisa_oficio': {
-                title: "Revisa Oficio",
-                actor: "4. Área de Procesos",
-                description: "Revisión procesal de los oficios generados para cautelar el cumplimiento de las normativas vigentes.",
-                actions: ["Validación de requisitos formales en oficios.", "Control de plazos de notificación."],
-                outputs: "Oficio revisado."
-            },
-            'genera_oficio_notifica': {
-                title: "Genera Oficio y Notifica",
-                actor: "2. Dirección DDV",
-                description: "De existir observaciones formales, la Dirección genera el oficio correspondiente y lo notifica al contratista.",
-                actions: ["Redacción y visación de oficio.", "Notificación oficial vía SGD."],
-                outputs: "Oficio notificado."
-            },
-            'subsanacion_entregable': {
-                title: "Subsanacion de Entregable",
-                actor: "1. Contratista",
-                description: "El contratista acoge las observaciones notificadas y presenta la subsanación correspondiente.",
-                actions: ["Absolución de observaciones punto por punto.", "Reingreso documentario."],
-                outputs: "Expediente subsanado."
-            }
-        };
+        // Router de Vistas
+        function switchView(viewName) {
+            document.getElementById('view-menu').classList.add('hidden');
+            document.getElementById('view-pagos').classList.add('hidden');
+            document.getElementById('view-presupuesto').classList.add('hidden');
+            document.getElementById('view-servicios').classList.add('hidden');
+            document.getElementById('btn-back-menu').classList.add('hidden');
 
-        const nodeKeys = [
-            'presenta_entregable',      // 1
-            'asigna_expediente',        // 2
-            'revisa_entregable',        // 3
-            'monitorea_entregable',     // 4
-            'es_conforme',              // 5 (Rombo)
-            'registra_entregable',      // 6
-            'memo_pago',                // 7
-            'elaboracion_oficio_obs',   // 8
-            'revisa_oficio',            // 9
-            'genera_oficio_notifica',   // 10
-            'subsanacion_entregable'    // 11
-        ];
-
-        let activeKey = 'presenta_entregable';
-
-        window.addEventListener('DOMContentLoaded', () => {
-            selectNode('presenta_entregable');
-            setTimeout(drawConnections, 100);
-            window.addEventListener('resize', drawConnections);
-        });
-
-        function drawConnections() {
-            const svg = document.getElementById('svg-connections');
-            while (svg.children.length > 1) {
-                svg.removeChild(svg.lastChild);
-            }
-
-            // FLECHA 1: Presenta Entregable -> Asigna Expediente
-            const el1From = document.getElementById('node-presenta_entregable');
-            const el1To = document.getElementById('node-asigna_expediente');
-
-            if (el1From && el1To) {
-                const startX = el1From.offsetLeft + el1From.offsetWidth / 2;
-                const startY = el1From.offsetTop + el1From.offsetHeight + 8;
-                const endX = el1To.offsetLeft + el1To.offsetWidth / 2;
-                const endY = el1To.offsetTop + 4;
-
-                const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path1.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
-                path1.setAttribute('stroke', '#094780');
-                path1.setAttribute('stroke-width', '4.5');
-                path1.setAttribute('fill', 'none');
-                path1.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path1);
-            }
-
-            // FLECHA 2: Asigna Expediente -> Baja más en el carril -> Gira hacia Revisa Entregable
-            const el2From = document.getElementById('node-asigna_expediente');
-            const el2To = document.getElementById('node-revisa_entregable');
-
-            if (el2From && el2To) {
-                const startX = el2From.offsetLeft + el2From.offsetWidth / 2;
-                const startY = el2From.offsetTop + el2From.offsetHeight + 8;
-                
-                const endX = el2To.offsetLeft - 5; 
-                const endY = el2To.offsetTop + el2To.offsetHeight / 2; 
-
-                const midY = startY + (endY - startY) * 1.09;
-
-                const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path2.setAttribute('d', `M ${startX} ${startY} L ${startX} ${midY} L ${endX} ${midY}`);
-                path2.setAttribute('stroke', '#094780');
-                path2.setAttribute('stroke-width', '4.5');
-                path2.setAttribute('fill', 'none');
-                path2.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path2);
-            }
-
-            // FLECHA 3: Revisa Entregable -> ¿Es conforme el Producto?
-            const el3From = document.getElementById('node-revisa_entregable');
-            const el3To = document.getElementById('node-es_conforme');
-
-            if (el3From && el3To) {
-                const startX = el3From.offsetLeft + el3From.offsetWidth + 1;
-                const startY = (el3From.offsetTop + el3From.offsetHeight / 2) + 7;
-                
-                const endX = el3To.offsetLeft + 63;
-                const endY = (el3To.offsetTop + el3To.offsetHeight / 2) + 21;
-
-                const path3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path3.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
-                path3.setAttribute('stroke', '#094780');
-                path3.setAttribute('stroke-width', '4.5');
-                path3.setAttribute('fill', 'none');
-                path3.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path3);
-            }
-
-            // FLECHA 4: ¿Es conforme el Producto? (Rombo) -> Elaboracion de Oficio de observacion
-            const el4From = document.getElementById('node-es_conforme');
-            const el4To = document.getElementById('node-elaboracion_oficio_obs');
-
-            if (el4From && el4To) {
-                const diamond = el4From.querySelector('.gateway-diamond');
-                const startX = el4From.offsetLeft + diamond.offsetLeft + diamond.offsetWidth + 10;
-                const startY = (el4From.offsetTop + diamond.offsetTop + diamond.offsetHeight / 2) + 7;
-                
-                const endX = el4To.offsetLeft - 4;
-                const endY = (el4To.offsetTop + el4To.offsetHeight / 2) + 6;
-
-                const path4 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path4.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
-                path4.setAttribute('stroke', '#094780');
-                path4.setAttribute('stroke-width', '4.5');
-                path4.setAttribute('fill', 'none');
-                path4.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path4);
-            }
-
-            // FLECHA 5: ¿Es conforme el Producto? (Rombo) -> Registra Entregable
-            const el5From = document.getElementById('node-es_conforme');
-            const el5To = document.getElementById('node-registra_entregable');
-
-            if (el5From && el5To) {
-                const diamond = el5From.querySelector('.gateway-diamond');
-                const startX = el5From.offsetLeft + diamond.offsetLeft + diamond.offsetWidth / 2;
-                const startY = el5From.offsetTop + diamond.offsetTop + diamond.offsetHeight + 17;
-                
-                const endX = el5To.offsetLeft + el5To.offsetWidth / 2;
-                const endY = el5To.offsetTop + 1;
-
-                const path5 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path5.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
-                path5.setAttribute('stroke', '#094780');
-                path5.setAttribute('stroke-width', '4.5');
-                path5.setAttribute('fill', 'none');
-                path5.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path5);
-            }
-
-            // FLECHA 6: Elaboracion de Oficio de observacion -> Revisa Oficio
-            const el6From = document.getElementById('node-elaboracion_oficio_obs');
-            const el6To = document.getElementById('node-revisa_oficio');
-
-            if (el6From && el6To) {
-                const startX = el6From.offsetLeft + el6From.offsetWidth / 2;
-                const startY = el6From.offsetTop + el6From.offsetHeight + 8;
-                
-                const endX = el6To.offsetLeft + el6To.offsetWidth / 2;
-                const endY = el6To.offsetTop + 2;
-
-                const path6 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path6.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
-                path6.setAttribute('stroke', '#094780');
-                path6.setAttribute('stroke-width', '4.5');
-                path6.setAttribute('fill', 'none');
-                path6.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path6);
-            }
-
-            // FLECHA 7: Revisa Oficio -> Se alinea al centro de Genera Oficio -> Sube verticalmente apuntando hacia arriba
-            const el7From = document.getElementById('node-revisa_oficio');
-            const el7To = document.getElementById('node-genera_oficio_notifica');
-
-            if (el7From && el7To) {
-                const startX = el7From.offsetLeft + el7From.offsetWidth;
-                const startY = (el7From.offsetTop + el7From.offsetHeight / 2) + 6;
-                
-                const targetX = (el7To.offsetLeft + el7To.offsetWidth / 2) + 3;
-                const targetY = el7To.offsetTop + el7To.offsetHeight + 12;
-
-                const path7 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path7.setAttribute('d', `M ${startX} ${startY} L ${targetX} ${startY} L ${targetX} ${targetY}`);
-                path7.setAttribute('stroke', '#094780');
-                path7.setAttribute('stroke-width', '4.5');
-                path7.setAttribute('fill', 'none');
-                path7.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path7);
-            }
-
-            // FLECHA 8: Genera Oficio y Notifica -> Sube por columna 5 hasta carril Contratista -> Gira a Subsanacion de Entregable
-            const el8From = document.getElementById('node-genera_oficio_notifica');
-            const el8To = document.getElementById('node-subsanacion_entregable');
-
-            if (el8From && el8To) {
-                const startX = el8From.offsetLeft + el8From.offsetWidth / 2;
-                const startY = el8From.offsetTop + 7; 
-
-                const endX = el8To.offsetLeft + el8To.offsetWidth + 4; 
-                const endY = (el8To.offsetTop + el8To.offsetHeight / 2) + 8;
-
-                const midY = endY;
-
-                const path8 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path8.setAttribute('d', `M ${startX} ${startY} L ${startX} ${midY} L ${endX} ${midY}`);
-                path8.setAttribute('stroke', '#094780');
-                path8.setAttribute('stroke-width', '4.5');
-                path8.setAttribute('fill', 'none');
-                path8.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path8);
-            }
-
-            // FLECHA 9: Subsanacion de Entregable (borde izquierdo) -> Presenta Entregable (borde derecho)
-            const el9From = document.getElementById('node-subsanacion_entregable');
-            const el9To = document.getElementById('node-presenta_entregable');
-
-            if (el9From && el9To) {
-                const startX = el9From.offsetLeft - 2; 
-                const startY = (el9From.offsetTop + el9From.offsetHeight / 2) + 8;
-                
-                const endX = el9To.offsetLeft + el9To.offsetWidth + 6; 
-                const endY = (el9To.offsetTop + el9To.offsetHeight / 2) + 8;
-
-                const path9 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path9.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
-                path9.setAttribute('stroke', '#094780');
-                path9.setAttribute('stroke-width', '4.5');
-                path9.setAttribute('fill', 'none');
-                path9.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path9);
-            }
-
-            // FLECHA 10: Registra Entregable -> Columna 6 -> Sube al borde inferior de Genera Memorandum de Pago
-            const el10From = document.getElementById('node-registra_entregable');
-            const el10To = document.getElementById('node-memo_pago');
-
-            if (el10From && el10To) {
-                const startX = el10From.offsetLeft + el10From.offsetWidth;
-                const startY = (el10From.offsetTop + el10From.offsetHeight / 2) + 8;
-                
-                const targetX = el10To.offsetLeft + el10To.offsetWidth / 2;
-                const targetY = el10To.offsetTop + el10To.offsetHeight + 12;
-
-                const path10 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path10.setAttribute('d', `M ${startX} ${startY} L ${targetX} ${startY} L ${targetX} ${targetY}`);
-                path10.setAttribute('stroke', '#094780');
-                path10.setAttribute('stroke-width', '4.5');
-                path10.setAttribute('fill', 'none');
-                path10.setAttribute('marker-end', 'url(#arrow)');
-                svg.appendChild(path10);
+            if (viewName === 'menu') {
+                document.getElementById('view-menu').classList.remove('hidden');
+            } else if (viewName === 'pagos') {
+                document.getElementById('view-pagos').classList.remove('hidden');
+                document.getElementById('btn-back-menu').classList.remove('hidden');
+                setTimeout(pagosDrawConnections, 50);
+            } else if (viewName === 'presupuesto') {
+                document.getElementById('view-presupuesto').classList.remove('hidden');
+                document.getElementById('btn-back-menu').classList.remove('hidden');
+                setTimeout(presupDrawConnections, 50);
+            } else if (viewName === 'servicios') {
+                document.getElementById('view-servicios').classList.remove('hidden');
+                document.getElementById('btn-back-menu').classList.remove('hidden');
+                setTimeout(servDrawConnections, 50);
             }
         }
 
-        function selectNode(key) {
-            activeKey = key;
-            nodeKeys.forEach(k => {
-                const el = document.getElementById(`node-${k}`);
+        // ==========================================
+        // LÓGICA: FLUJO DE PAGOS
+        // ==========================================
+        const pagosStepsData = {
+            'presenta_entregable': { title: "Presenta Entregable", actor: "1. Contratista", description: "El contratista presenta el entregable físico y digital a través del Sistema de Gestión Documental (SGD).", actions: ["Presentación inicial del expediente.", "Registro en Mesa de Partes."], outputs: "Cargo de recepción SGD." },
+            'asigna_expediente': { title: "Asigna Expediente", actor: "2. Dirección DDV", description: "La Dirección de Derecho de Vía recibe el expediente y realiza la asignación formal al responsable.", actions: ["Revisión preliminar de derivación.", "Asignación de especialista."], outputs: "Expediente asignado." },
+            'revisa_entregable': { title: "Revisa Entregable", actor: "3. Administrador de Proyectos", description: "El Administrador de Proyectos revisa el cumplimiento del producto del servicio.", actions: ["Cruce con TDR y términos contractuales.", "Verificación de actividades del entregable."], outputs: "Informe de revisión." },
+            'monitorea_entregable': { title: "Monitorea Entregable", actor: "4. Área de Procesos", description: "El Área de Procesos realiza el seguimiento y control del avance del expediente dentro del flujo institucional.", actions: ["Control de tiempos y plazos."], outputs: "Reporte de estado." },
+            'es_conforme': { title: "¿Es conforme el Producto?", actor: "3. Administrador de Proyectos", description: "Compuerta de decisión para verificar si el entregable cuenta con la conformidad técnica requerida.", actions: ["Evaluación de criterios de conformidad.", "Derivación condicional (Sí / No)."], outputs: "Resultado de conformidad." },
+            'registra_entregable': { title: "Registra Entregable", actor: "4. Área de Procesos", description: "Verificacion y Registro del ingreso y conformidad del entregable en los sistemas de control de la DDV.", actions: ["Verificacion del cumplimiento de las actividades del TDR.", "Registro del entregable."], outputs: "Registro actualizado." },
+            'memo_pago': { title: "Genera Memorandum de Pago", actor: "2. Dirección DDV", description: "Estando conforme el entregable, la Dirección genera el memorándum de remisión para el trámite de pago.", actions: ["Aprobación final de la Dirección.", "Derivación al área de logística o contabilidad de corresponder."], outputs: "Memorándum de pago." },
+            'elaboracion_oficio_obs': { title: "Elaboracion de Oficio de observacion", actor: "3. Administrador de Proyectos", description: "Si se detectan deficiencias, el administrador elabora el proyecto de oficio de observaciones.", actions: ["Sistematización de observaciones técnicas.", "Remisión a la Dirección."], outputs: "Proyecto de oficio de observaciones." },
+            'revisa_oficio': { title: "Revisa Oficio", actor: "4. Área de Procesos", description: "Revisión procesal de los oficios generados para cautelar el cumplimiento de las normativas vigentes.", actions: ["Validación de requisitos formales en oficios.", "Control de plazos de notificación."], outputs: "Oficio revisado." },
+            'genera_oficio_notifica': { title: "Genera Oficio y Notifica", actor: "2. Dirección DDV", description: "De existir observaciones formales, la Dirección genera el oficio correspondiente y lo notifica al contratista.", actions: ["Redacción y visación de oficio.", "Notificación oficial vía SGD."], outputs: "Oficio notificado." },
+            'subsanacion_entregable': { title: "Subsanacion de Entregable", actor: "1. Contratista", description: "El contratista acoge las observaciones notificadas y presenta la subsanación correspondiente.", actions: ["Absolución de observaciones punto por punto.", "Reingreso documentario."], outputs: "Expediente subsanado." }
+        };
+        const pagosNodeKeys = ['presenta_entregable', 'asigna_expediente', 'revisa_entregable', 'monitorea_entregable', 'es_conforme', 'registra_entregable', 'memo_pago', 'elaboracion_oficio_obs', 'revisa_oficio', 'genera_oficio_notifica', 'subsanacion_entregable'];
+        let pagosActiveKey = 'presenta_entregable';
+
+        function pagosSelectNode(key) {
+            pagosActiveKey = key;
+            pagosNodeKeys.forEach(k => {
+                const el = document.getElementById(`node-pagos-${k}`);
                 if (el) {
-                    if (k === 'memo_pago') {
-                        el.classList.remove('ring-4', 'ring-provias-800', 'border-white');
-                    } else {
-                        el.classList.remove('ring-4', 'ring-provias-800', 'border-provias-800', 'bg-provias-50');
-                    }
+                    if (k === 'memo_pago') el.classList.remove('ring-4', 'ring-provias-800');
+                    else el.classList.remove('ring-4', 'ring-provias-800', 'border-provias-800', 'bg-provias-50');
                 }
             });
-
-            const selectedEl = document.getElementById(`node-${key}`);
+            const selectedEl = document.getElementById(`node-pagos-${key}`);
             if (selectedEl) {
-                if (key === 'memo_pago') {
-                    selectedEl.classList.add('ring-4', 'ring-provias-800', 'border-white');
-                } else {
-                    selectedEl.classList.add('ring-4', 'ring-provias-800', 'border-provias-800', 'bg-provias-50');
-                }
+                if (key === 'memo_pago') selectedEl.classList.add('ring-4', 'ring-provias-800');
+                else selectedEl.classList.add('ring-4', 'ring-provias-800', 'border-provias-800', 'bg-provias-50');
             }
-
-            const data = stepsData[key];
-            document.getElementById('inspectorBadge').innerText = data.actor;
-            document.getElementById('inspectorContent').innerHTML = `
+            const data = pagosStepsData[key];
+            document.getElementById('inspectorBadge-pagos').innerText = data.actor;
+            document.getElementById('inspectorContent-pagos').innerHTML = `
                 <div class="space-y-4">
                     <div>
-                        <div class="flex items-center space-x-2 mb-1">
-                            <span class="bg-provias-800 text-white text-[10px] mono px-2 py-0.5 rounded font-semibold">${data.actor}</span>
-                        </div>
+                        <div class="flex items-center space-x-2 mb-1"><span class="bg-provias-800 text-white text-[10px] mono px-2 py-0.5 rounded font-semibold">${data.actor}</span></div>
                         <h4 class="text-base font-extrabold text-slate-900">${data.title}</h4>
                     </div>
-                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                        <p class="text-xs text-slate-700 leading-relaxed">${data.description}</p>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><p class="text-xs text-slate-700 leading-relaxed">${data.description}</p></div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5 flex items-center gap-1"><i class="fa-solid fa-list-check text-provias-800"></i> Acciones:</p>
+                        <ul class="space-y-1.5 text-xs text-slate-600">${data.actions.map(act => `<li class="flex items-start gap-2 bg-slate-50/80 p-2.5 rounded-lg border border-slate-100"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>${act}</span></li>`).join('')}</ul>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                            <i class="fa-solid fa-list-check text-provias-800"></i> Acciones:
-                        </p>
-                        <ul class="space-y-1.5 text-xs text-slate-600">
-                            ${data.actions.map(act => `<li class="flex items-start gap-2 bg-slate-50/80 p-2.5 rounded-lg border border-slate-100"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>${act}</span></li>`).join('')}
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1 flex items-center gap-1">
-                            <i class="fa-solid fa-file-arrow-up text-provias-800"></i> Producto / Salida:
-                        </p>
+                        <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1 flex items-center gap-1"><i class="fa-solid fa-file-arrow-up text-provias-800"></i> Producto / Salida:</p>
                         <p class="text-xs mono text-slate-700 bg-amber-50/70 p-2.5 rounded-lg border border-amber-200/60">${data.outputs}</p>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
 
-        navigateStep = function(direction) {
-            let currentIndex = nodeKeys.indexOf(activeKey);
-            currentIndex += direction;
-            if (currentIndex < 0) currentIndex = nodeKeys.length - 1;
-            if (currentIndex >= nodeKeys.length) currentIndex = 0;
-            selectNode(nodeKeys[currentIndex]);
+        function pagosNavigateStep(dir) {
+            let idx = pagosNodeKeys.indexOf(pagosActiveKey) + dir;
+            if (idx < 0) idx = pagosNodeKeys.length - 1;
+            if (idx >= pagosNodeKeys.length) idx = 0;
+            pagosSelectNode(pagosNodeKeys[idx]);
         }
+
+        function pagosDrawConnections() {
+            const svg = document.getElementById('svg-connections-pagos');
+            while (svg.children.length > 1) svg.removeChild(svg.lastChild);
+
+            const d1 = [document.getElementById('node-pagos-presenta_entregable'), document.getElementById('node-pagos-asigna_expediente')];
+            if (d1[0] && d1[1]) {
+                const x1 = d1[0].offsetLeft + d1[0].offsetWidth / 2, y1 = d1[0].offsetTop + d1[0].offsetHeight + 8;
+                const x2 = d1[1].offsetLeft + d1[1].offsetWidth / 2, y2 = d1[1].offsetTop + 4;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d2 = [document.getElementById('node-pagos-asigna_expediente'), document.getElementById('node-pagos-revisa_entregable')];
+            if (d2[0] && d2[1]) {
+                const x1 = d2[0].offsetLeft + d2[0].offsetWidth / 2, y1 = d2[0].offsetTop + d2[0].offsetHeight + 8;
+                const x2 = d2[1].offsetLeft - 5, y2 = d2[1].offsetTop + d2[1].offsetHeight / 2;
+                const my = y1 + (y2 - y1) * 1.09;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x1} ${my} L ${x2} ${my}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d3 = [document.getElementById('node-pagos-revisa_entregable'), document.getElementById('node-pagos-es_conforme')];
+            if (d3[0] && d3[1]) {
+                const x1 = d3[0].offsetLeft + d3[0].offsetWidth + 1, y1 = d3[0].offsetTop + d3[0].offsetHeight / 2 + 7;
+                const x2 = d3[1].offsetLeft + 63, y2 = d3[1].offsetTop + d3[1].offsetHeight / 2 + 21;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d4 = [document.getElementById('node-pagos-es_conforme'), document.getElementById('node-pagos-elaboracion_oficio_obs')];
+            if (d4[0] && d4[1]) {
+                const diam = d4[0].querySelector('.gateway-diamond');
+                const x1 = d4[0].offsetLeft + diam.offsetLeft + diam.offsetWidth + 10;
+                const y1 = d4[0].offsetTop + diam.offsetTop + diam.offsetHeight / 2 + 7;
+                const x2 = d4[1].offsetLeft - 4, y2 = d4[1].offsetTop + d4[1].offsetHeight / 2 + 6;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d5 = [document.getElementById('node-pagos-es_conforme'), document.getElementById('node-pagos-registra_entregable')];
+            if (d5[0] && d5[1]) {
+                const diam = d5[0].querySelector('.gateway-diamond');
+                const x1 = d5[0].offsetLeft + diam.offsetLeft + diam.offsetWidth / 2;
+                const y1 = d5[0].offsetTop + diam.offsetTop + diam.offsetHeight + 17;
+                const x2 = d5[1].offsetLeft + d5[1].offsetWidth / 2, y2 = d5[1].offsetTop + 1;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d6 = [document.getElementById('node-pagos-elaboracion_oficio_obs'), document.getElementById('node-pagos-revisa_oficio')];
+            if (d6[0] && d6[1]) {
+                const x1 = d6[0].offsetLeft + d6[0].offsetWidth / 2, y1 = d6[0].offsetTop + d6[0].offsetHeight + 8;
+                const x2 = d6[1].offsetLeft + d6[1].offsetWidth / 2, y2 = d6[1].offsetTop + 2;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d7 = [document.getElementById('node-pagos-revisa_oficio'), document.getElementById('node-pagos-genera_oficio_notifica')];
+            if (d7[0] && d7[1]) {
+                const x1 = d7[0].offsetLeft + d7[0].offsetWidth, y1 = d7[0].offsetTop + d7[0].offsetHeight / 2 + 6;
+                const tx = d7[1].offsetLeft + d7[1].offsetWidth / 2 + 3, ty = d7[1].offsetTop + d7[1].offsetHeight + 12;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${tx} ${y1} L ${tx} ${ty}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d8 = [document.getElementById('node-pagos-genera_oficio_notifica'), document.getElementById('node-pagos-subsanacion_entregable')];
+            if (d8[0] && d8[1]) {
+                const x1 = d8[0].offsetLeft + d8[0].offsetWidth / 2, y1 = d8[0].offsetTop + 7;
+                const x2 = d8[1].offsetLeft + d8[1].offsetWidth + 4, y2 = d8[1].offsetTop + d8[1].offsetHeight / 2 + 8;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x1} ${y2} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d9 = [document.getElementById('node-pagos-subsanacion_entregable'), document.getElementById('node-pagos-presenta_entregable')];
+            if (d9[0] && d9[1]) {
+                const x1 = d9[0].offsetLeft - 2, y1 = d9[0].offsetTop + d9[0].offsetHeight / 2 + 8;
+                const x2 = d9[1].offsetLeft + d9[1].offsetWidth + 6, y2 = d9[1].offsetTop + d9[1].offsetHeight / 2 + 8;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+            const d10 = [document.getElementById('node-pagos-registra_entregable'), document.getElementById('node-pagos-memo_pago')];
+            if (d10[0] && d10[1]) {
+                const x1 = d10[0].offsetLeft + d10[0].offsetWidth, y1 = d10[0].offsetTop + d10[0].offsetHeight / 2 + 8;
+                const tx = d10[1].offsetLeft + d10[1].offsetWidth / 2, ty = d10[1].offsetTop + d10[1].offsetHeight + 12;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${tx} ${y1} L ${tx} ${ty}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-pagos)');
+                svg.appendChild(p);
+            }
+        }
+
+
+        // ========================================== -->
+        // LÓGICA: FLUJO DE PRESUPUESTO
+        // ========================================== -->
+        const presupStepsData = {
+            'creacion_solicitud': { title: "Creación de solicitud por SGD", actor: "1. Administrador de Proyectos", description: "El Administrador de Proyectos genera un expediente por el SGD con la solicitud de una Certificación, Rebaja o Ampliación.", actions: ["Generación de Expediente SGD.", "Adjunta tasación, justificación para rebaja o ampliación."], outputs: "Documentación necesaria para la Certificación." },
+            'generacion_reporte': { title: "Generacion de Reporte", actor: "2. Área de Presupuesto", description: "El Área de Presupuesto emite el Reporte Sigaweb.", actions: ["Revisión de documentación adjunta.", "Emisión del reporte Sigaweb."], outputs: "Reporte Sigaweb." },
+            'proyecta_memo': { title: "Proyecta Memo de Certificacion", actor: "1. Administrador de Proyectos", description: "El Administrador adjunta toda la documentación y el reporte Sigaweb emitida por el área de Presupuesto.", actions: ["Adjunta toda la documentación.", "Genera proyecto de memo."], outputs: "Proyecto de memo de certificación." },
+            'genera_memo_certificacion': { title: "Genera Memorandum de Certificacion", actor: "3. Dirección DDV", description: "Estando conforme la Certificación, la Dirección genera el memorándum para la Ampliación o Rebaja hacia OPP.", actions: ["Aprobación final de la Dirección.", "Derivación a la oficina de OPP."], outputs: "Memorandum de Certificacion." }
+        };
+        const presupNodeKeys = ['creacion_solicitud', 'generacion_reporte', 'proyecta_memo', 'genera_memo_certificacion'];
+        let presupActiveKey = 'creacion_solicitud';
+
+        function presupSelectNode(key) {
+            presupActiveKey = key;
+            presupNodeKeys.forEach(k => {
+                const el = document.getElementById(`node-presup-${k}`);
+                if (el) {
+                    if (k === 'genera_memo_certificacion') el.classList.remove('ring-4', 'ring-provias-800');
+                    else el.classList.remove('ring-4', 'ring-provias-800', 'border-provias-800', 'bg-provias-50');
+                }
+            });
+            const selectedEl = document.getElementById(`node-presup-${key}`);
+            if (selectedEl) {
+                if (key === 'genera_memo_certificacion') selectedEl.classList.add('ring-4', 'ring-provias-800');
+                else selectedEl.classList.add('ring-4', 'ring-provias-800', 'border-provias-800', 'bg-provias-50');
+            }
+            const data = presupStepsData[key];
+            document.getElementById('inspectorBadge-presupuesto').innerText = data.actor;
+            document.getElementById('inspectorContent-presupuesto').innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-1"><span class="bg-provias-800 text-white text-[10px] mono px-2 py-0.5 rounded font-semibold">${data.actor}</span></div>
+                        <h4 class="text-base font-extrabold text-slate-900">${data.title}</h4>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><p class="text-xs text-slate-700 leading-relaxed">${data.description}</p></div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5 flex items-center gap-1"><i class="fa-solid fa-list-check text-provias-800"></i> Acciones:</p>
+                        <ul class="space-y-1.5 text-xs text-slate-600">${data.actions.map(act => `<li class="flex items-start gap-2 bg-slate-50/80 p-2.5 rounded-lg border border-slate-100"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>${act}</span></li>`).join('')}</ul>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1 flex items-center gap-1"><i class="fa-solid fa-file-arrow-up text-provias-800"></i> Producto / Salida:</p>
+                        <p class="text-xs mono text-slate-700 bg-amber-50/70 p-2.5 rounded-lg border border-amber-200/60">${data.outputs}</p>
+                    </div>
+                </div>`;
+        }
+
+        function presupNavigateStep(dir) {
+            let idx = presupNodeKeys.indexOf(presupActiveKey) + dir;
+            if (idx < 0) idx = presupNodeKeys.length - 1;
+            if (idx >= presupNodeKeys.length) idx = 0;
+            presupSelectNode(presupNodeKeys[idx]);
+        }
+
+        function presupDrawConnections() {
+            const svg = document.getElementById('svg-connections-presupuesto');
+            while (svg.children.length > 1) svg.removeChild(svg.lastChild);
+
+            const d1 = [document.getElementById('node-presup-creacion_solicitud'), document.getElementById('node-presup-generacion_reporte')];
+            if (d1[0] && d1[1]) {
+                const x1 = d1[0].offsetLeft + d1[0].offsetWidth / 2, y1 = d1[0].offsetTop + d1[0].offsetHeight + 8;
+                const x2 = d1[1].offsetLeft + d1[1].offsetWidth / 2, y2 = d1[1].offsetTop + 4;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-presupuesto)');
+                svg.appendChild(p);
+            }
+            const d2 = [document.getElementById('node-presup-generacion_reporte'), document.getElementById('node-presup-proyecta_memo')];
+            if (d2[0] && d2[1]) {
+                const x1 = d2[0].offsetLeft + d2[0].offsetWidth / 2 + 171, y1 = d2[0].offsetTop + d2[0].offsetHeight / 2 + 6;
+                const x2 = d2[1].offsetLeft - 5, y2 = d2[1].offsetTop + d2[1].offsetHeight / 2 + 6;
+                const mx = x1 + (x2 - x1) / 2;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${mx} ${y1} L ${mx} ${y2} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-presupuesto)');
+                svg.appendChild(p);
+            }
+            const d3 = [document.getElementById('node-presup-proyecta_memo'), document.getElementById('node-presup-genera_memo_certificacion')];
+            if (d3[0] && d3[1]) {
+                const x1 = d3[0].offsetLeft + d3[0].offsetWidth / 2, y1 = d3[0].offsetTop + d3[0].offsetHeight + 8;
+                const x2 = d3[1].offsetLeft + d3[1].offsetWidth / 2, y2 = d3[1].offsetTop + 4;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-presupuesto)');
+                svg.appendChild(p);
+            }
+        }
+
+
+        // ========================================== -->
+        // LÓGICA: FLUJO DE SERVICIOS
+        // ========================================== -->
+        const servStepsData = {
+            'creacion_solicitud': { title: "Creación de solicitud por SGD", actor: "1. Administrador de Proyectos", description: "El Administrador de Proyectos genera un expediente por el SGD con la solicitud de Rebaja de OS.", actions: ["Generacion de Expediente SGD.", "Adjunta informe de sustento."], outputs: "Informe para Rebaja de OS" },
+            'generacion_reporte': { title: "Generacion de Reporte", actor: "2. Área de Presupuesto", description: "El Área de Presupuesto emite el Reporte Sigaweb.", actions: ["Revision de documentacion Adjunta.", "Emision del reporte Sigaweb."], outputs: "Reporte Sigaweb" },
+            'registro_rebaja': { title: "Registro y conocimiento de Rebaja", actor: "3. Área de Procesos", description: "El Área de Procesos toma conocimiento y registro de la Rebaja de OS.", actions: ["Registro de la OS en base de Datos."], outputs: "Registro" },
+            'proyecta_memo': { title: "Proyecta Memo de Rebaja de OS", actor: "1. Administrador de Proyectos", description: "El Administrador adjunta toda la documentacion y el reporte Sigaweb emitida por el area de Presupuesto.", actions: ["Adjunta toda la documentacion.", "Genera proyecto de memo."], outputs: "Proyecto de memo de rebaja" },
+            'genera_memo_rebaja': { title: "Genera Memorandum de Rebaja de OS", actor: "4. Dirección DDV", description: "Estando conforme, la Dirección genera el memorándum de Rebaja de OS.", actions: ["Aprobación final de la Dirección.", "Derivación al área de logística u OPP de corresponder."], outputs: "Memorandum de Rebaja" }
+        };
+        const servNodeKeys = ['creacion_solicitud', 'generacion_reporte', 'registro_rebaja', 'proyecta_memo', 'genera_memo_rebaja'];
+        let servActiveKey = 'creacion_solicitud';
+
+        function servSelectNode(key) {
+            servActiveKey = key;
+            servNodeKeys.forEach(k => {
+                const el = document.getElementById(`node-serv-${k}`);
+                if (el) {
+                    if (k === 'genera_memo_rebaja') el.classList.remove('ring-4', 'ring-provias-800');
+                    else el.classList.remove('ring-4', 'ring-provias-800', 'border-provias-800', 'bg-provias-50');
+                }
+            });
+            const selectedEl = document.getElementById(`node-serv-${key}`);
+            if (selectedEl) {
+                if (key === 'genera_memo_rebaja') selectedEl.classList.add('ring-4', 'ring-provias-800');
+                else selectedEl.classList.add('ring-4', 'ring-provias-800', 'border-provias-800', 'bg-provias-50');
+            }
+            const data = servStepsData[key];
+            document.getElementById('inspectorBadge-servicios').innerText = data.actor;
+            document.getElementById('inspectorContent-servicios').innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-1"><span class="bg-provias-800 text-white text-[10px] mono px-2 py-0.5 rounded font-semibold">${data.actor}</span></div>
+                        <h4 class="text-base font-extrabold text-slate-900">${data.title}</h4>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><p class="text-xs text-slate-700 leading-relaxed">${data.description}</p></div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5 flex items-center gap-1"><i class="fa-solid fa-list-check text-provias-800"></i> Acciones:</p>
+                        <ul class="space-y-1.5 text-xs text-slate-600">${data.actions.map(act => `<li class="flex items-start gap-2 bg-slate-50/80 p-2.5 rounded-lg border border-slate-100"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i><span>${act}</span></li>`).join('')}</ul>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1 flex items-center gap-1"><i class="fa-solid fa-file-arrow-up text-provias-800"></i> Producto / Salida:</p>
+                        <p class="text-xs mono text-slate-700 bg-amber-50/70 p-2.5 rounded-lg border border-amber-200/60">${data.outputs}</p>
+                    </div>
+                </div>`;
+        }
+
+        function servNavigateStep(dir) {
+            let idx = servNodeKeys.indexOf(servActiveKey) + dir;
+            if (idx < 0) idx = servNodeKeys.length - 1;
+            if (idx >= servNodeKeys.length) idx = 0;
+            servSelectNode(servNodeKeys[idx]);
+        }
+
+        function servDrawConnections() {
+            const svg = document.getElementById('svg-connections-servicios');
+            while (svg.children.length > 1) svg.removeChild(svg.lastChild);
+
+            const d1 = [document.getElementById('node-serv-creacion_solicitud'), document.getElementById('node-serv-generacion_reporte')];
+            if (d1[0] && d1[1]) {
+                const x1 = d1[0].offsetLeft + d1[0].offsetWidth / 2, y1 = d1[0].offsetTop + d1[0].offsetHeight + 8;
+                const x2 = d1[1].offsetLeft + d1[1].offsetWidth / 2, y2 = d1[1].offsetTop + 4;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-servicios)');
+                svg.appendChild(p);
+            }
+            const d2 = [document.getElementById('node-serv-generacion_reporte'), document.getElementById('node-serv-registro_rebaja')];
+            if (d2[0] && d2[1]) {
+                const x1 = d2[0].offsetLeft + d2[0].offsetWidth / 2, y1 = d2[0].offsetTop + d2[0].offsetHeight + 8;
+                const x2 = d2[1].offsetLeft + d2[1].offsetWidth / 2, y2 = d2[1].offsetTop + 4;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-servicios)');
+                svg.appendChild(p);
+            }
+            const d3 = [document.getElementById('node-serv-registro_rebaja'), document.getElementById('node-serv-proyecta_memo')];
+            if (d3[0] && d3[1]) {
+                const x1 = d3[0].offsetLeft + d3[0].offsetWidth / 2 + 171, y1 = d3[0].offsetTop + d3[0].offsetHeight / 2 + 6;
+                const x2 = d3[1].offsetLeft - 5, y2 = d3[1].offsetTop + d3[1].offsetHeight / 2 + 6;
+                const mx = x1 + (x2 - x1) / 2;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${mx} ${y1} L ${mx} ${y2} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-servicios)');
+                svg.appendChild(p);
+            }
+            const d4 = [document.getElementById('node-serv-proyecta_memo'), document.getElementById('node-serv-genera_memo_rebaja')];
+            if (d4[0] && d4[1]) {
+                const x1 = d4[0].offsetLeft + d4[0].offsetWidth / 2, y1 = d4[0].offsetTop + d4[0].offsetHeight + 8;
+                const x2 = d4[1].offsetLeft + d4[1].offsetWidth / 2, y2 = d4[1].offsetTop + 4;
+                const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p.setAttribute('d', `M ${x1} ${y1} L ${x2} ${y2}`); p.setAttribute('stroke', '#094780'); p.setAttribute('stroke-width', '4.5'); p.setAttribute('fill', 'none'); p.setAttribute('marker-end', 'url(#arrow-servicios)');
+                svg.appendChild(p);
+            }
+        }
+
+        // Inicialización y eventos globales
+        window.addEventListener('DOMContentLoaded', () => {
+            pagosSelectNode('presenta_entregable');
+            presupSelectNode('creacion_solicitud');
+            servSelectNode('creacion_solicitud');
+            window.addEventListener('resize', () => {
+                if (!document.getElementById('view-pagos').classList.contains('hidden')) pagosDrawConnections();
+                if (!document.getElementById('view-presupuesto').classList.contains('hidden')) presupDrawConnections();
+                if (!document.getElementById('view-servicios').classList.contains('hidden')) servDrawConnections();
+            });
+        });
     </script>
 </body>
 </html>
